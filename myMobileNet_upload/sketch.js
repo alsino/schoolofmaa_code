@@ -2,6 +2,9 @@ let dropzone;
 let img;
 let voice;
 let button;
+let bullshitBtn;
+
+let sentence;
 
 var phrases = new Array();
 
@@ -76,7 +79,8 @@ phrases[4][9] = "the exploration of montage elements.";
 function preload() {
  myMobileNet = ml5.imageClassifier('MobileNet');
  voice = new p5.Speech("Google US English");
- voice.setRate(0.6);
+//  voice.setRate(0.8);
+//  voice.setLang('en-US');
 }
 
 
@@ -86,8 +90,10 @@ function setup() {
   dropzone.dragOver(highlight);
   dropzone.dragLeave(unhighlight);
   dropzone.drop(gotFile, unhighlight);
+}
 
-  
+function generateAIReview(){
+  myMobileNet.classify(img, gotResult);
 }
 
 function gotFile(file) {
@@ -97,9 +103,9 @@ function gotFile(file) {
   // console.log(file);
   img.size(500, 500);  
 
-  myMobileNet.classify(img, gotResult);
-
-  
+  bullshitBtn = createButton("Generate AI art review");
+  bullshitBtn.parent('wrapper');
+  bullshitBtn.mousePressed(generateAIReview);
 }
 
 function highlight() {
@@ -119,21 +125,20 @@ function gotResult(error, result) {
   console.log(result);
   let string = `"This piece is a very interesting collage of a ${result[0].label} and a ${result[1].label} and a ${result[2].label}`;
 
-  let phrase = string + " " + "</br>" + generateBullshit() + " ";
+  sentence = string + ". " + generateBullshit() + " ";
 
-  createDiv(phrase);
+  createDiv(sentence);
 
   button = createButton("Read text");
+  button.parent('wrapper');
   button.mousePressed(buttonIsPressed);
 
-  // voice.speak("hello"); // say something 
-
   function buttonIsPressed(){
-    voice.speak("hello"); // say something
+    console.log("Button is pressed");
+    voice.speak(sentence); // say something
   }
+
 }
-
-
 
 
 

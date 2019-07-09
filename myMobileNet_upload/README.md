@@ -1,0 +1,3 @@
+## Shit AI Art Critics would say
+
+A simple project description...

@@ -98,7 +98,7 @@ function setup() {
   bullshitBtn = createButton("Generate AI art critique");
   bullshitBtn.parent('wrapper');
   bullshitBtn.class('aiText');
-  bullshitBtn.style('display', 'block');
+  bullshitBtn.style('display', 'none');
   
   canvas = createCanvas(windowWidth,600);
   // canvas.parent('wrapper');

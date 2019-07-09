@@ -105,7 +105,13 @@ function setup() {
   background("#fefefe");
   // translate(width/2, height/ 2);
 
-  
+  bullshitBtn.style('display', 'block');
+  bullshitBtn.mouseReleased(() => {
+    console.log("Ready");
+    generateAIReview();
+  });
+
+  console.log("Ready");
 }
 
 function draw(){
@@ -119,24 +125,15 @@ function handleFile(file) {
   if (file.type === 'image') {
     img = createImg(file.data);
     img.hide();
-
-    bullshitBtn.style('display', 'block');
-    bullshitBtn.mousePressed(generateAIReview);
   } else {
     img = null;
   }
 }
 
 function generateAIReview(){
-  myMobileNet.classify(img, gotResult);
+  console.log("generate review");
+  //myMobileNet.classify(img, gotResult);
 }
-
-// function gotFile(file) {
-//   bullshitBtn = createButton("Generate AI art review");
-//   bullshitBtn.parent('wrapper');
-//   bullshitBtn.mousePressed(generateAIReview);
-// }
-
 
 
 
@@ -145,7 +142,7 @@ function gotResult(error, result) {
     console.error(error);
   }
 
-  console.log(result);
+  // console.log(result);
   let string = `"This piece is a very interesting collage of a ${result[0].label} and a ${result[1].label} and a ${result[2].label}`;
 
   sentence = string + ". " + generateBullshit() + " ";
@@ -154,6 +151,8 @@ function gotResult(error, result) {
   review.parent('wrapper');
   // textSize(20);
   // text(sentence, 200, 10, 70);
+
+  console.log("Call me");
 
   button = createButton("Read text");
   button.parent('wrapper');
@@ -178,7 +177,6 @@ function generateBullshit() {
   let part3 = phrases[2];
   let part4 = phrases[3];
   let part5 = phrases[4];
-
 
   let randomPart1 = part1[floor(random(1,9))];
   let randomPart2 = part2[floor(random(1,9))];

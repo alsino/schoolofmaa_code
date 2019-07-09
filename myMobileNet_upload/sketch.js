@@ -5,6 +5,7 @@ let button;
 let bullshitBtn;
 let review;
 let isPredicting = false;
+let imgHeightNew = 100;
 
 let fileInput;
 let sentence;
@@ -115,7 +116,8 @@ function setup() {
 
 function draw(){
   if (img) {
-    image(img, width/2 - img.width/2 , 0, img.width, img.height);
+    resizeCanvas(windowWidth, imgHeightNew);
+    image(img, 0, 0);
 
     if(isPredicting) {
       console.log("Is predicting...");
@@ -127,11 +129,20 @@ function draw(){
 function handleFile(file) {
   print(file);
   if (file.type === 'image') {
-    img = createImg(file.data);
-    img.hide();
+
+    // DOM image
+    // img = createImg(file.data);
+    // img.hide();
+    
+    img = loadImage(file.data);
+
+    let ratio = img.height / img.width;
+    imgHeightNew = windowWidth * ratio;
+    img.resize(windowWidth, imgHeightNew);
 
     bullshitBtn.style('display', 'block');
     bullshitBtn.mouseReleased(generateAIReview);
+    
   } else {
     img = null;
   }

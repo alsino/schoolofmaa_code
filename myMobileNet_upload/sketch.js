@@ -4,11 +4,14 @@ let voice;
 let button;
 let bullshitBtn;
 let review;
+let isPredicting = false;
 
 let fileInput;
 let sentence;
 
 let sizeFactor = 0.6;
+
+let spinner;
 
 var phrases = new Array();
 
@@ -87,6 +90,8 @@ function preload() {
  voice = new p5.Speech("Google US English");
  voice.setRate(0.8);
  voice.setLang('en-US');
+
+ spinner = loadImage('img/spinner.gif');
 }
 
 
@@ -111,7 +116,12 @@ function setup() {
 function draw(){
   if (img) {
     image(img, width/2 - img.width/2 , 0, img.width, img.height);
-  }
+
+    if(isPredicting) {
+      console.log("Is predicting...");
+      // createImg("https://media0.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif");
+    } 
+}
 }
 
 function handleFile(file) {
@@ -128,6 +138,7 @@ function handleFile(file) {
 }
 
 function generateAIReview(){
+  isPredicting = true;
   myMobileNet.classify(img, gotResult);
 }
 
@@ -138,7 +149,10 @@ function gotResult(error, result) {
     console.error(error);
   }
 
-  console.log(result);
+  isPredicting = false;
+  // console.log(result);
+
+
   let string = `"This piece is a very interesting collage of a ${result[0].label} and a ${result[1].label} and a ${result[2].label}`;
 
   sentence = string + ". " + generateBullshit() + " ";
@@ -158,7 +172,6 @@ function gotResult(error, result) {
   }
 
 }
-
 
 
 

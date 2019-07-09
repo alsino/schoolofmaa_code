@@ -1,10 +1,14 @@
-let dropzone;
+let canvas;
 let img;
 let voice;
 let button;
 let bullshitBtn;
+let review;
 
+let fileInput;
 let sentence;
+
+let sizeFactor = 0.6;
 
 var phrases = new Array();
 
@@ -77,44 +81,63 @@ phrases[4][9] = "the exploration of montage elements.";
 
 
 function preload() {
- myMobileNet = ml5.imageClassifier('MobileNet');
+ myMobileNet = ml5.imageClassifier('MobileNet', function(){
+   console.log("model loaded");
+ } );
  voice = new p5.Speech("Google US English");
-//  voice.setRate(0.8);
-//  voice.setLang('en-US');
+ voice.setRate(0.8);
+ voice.setLang('en-US');
 }
 
 
 function setup() {
-  noCanvas();
-  dropzone = select('#dropzone');
-  dropzone.dragOver(highlight);
-  dropzone.dragLeave(unhighlight);
-  dropzone.drop(gotFile, unhighlight);
+  fileInput = createFileInput(handleFile);
+  fileInput.parent('wrapper');
+  fileInput.class('fileSelector');
+
+  bullshitBtn = createButton("Generate AI art critique");
+  bullshitBtn.parent('wrapper');
+  bullshitBtn.class('aiText');
+  bullshitBtn.style('display', 'none');
+  
+  canvas = createCanvas(windowWidth,600);
+  // canvas.parent('wrapper');
+  background("#fefefe");
+  // translate(width/2, height/ 2);
+
+  
+}
+
+function draw(){
+  if (img) {
+    image(img, width/2 - img.width/2 , 0, img.width, img.height);
+  }
+}
+
+function handleFile(file) {
+  print(file);
+  if (file.type === 'image') {
+    img = createImg(file.data);
+    img.hide();
+
+    bullshitBtn.style('display', 'block');
+    bullshitBtn.mousePressed(generateAIReview);
+  } else {
+    img = null;
+  }
 }
 
 function generateAIReview(){
   myMobileNet.classify(img, gotResult);
 }
 
-function gotFile(file) {
-  // createP(file.name + " " + file.size);
-  img = createImg(file.data);
-  img.parent('wrapper');
-  // console.log(file);
-  img.size(500, 500);  
+// function gotFile(file) {
+//   bullshitBtn = createButton("Generate AI art review");
+//   bullshitBtn.parent('wrapper');
+//   bullshitBtn.mousePressed(generateAIReview);
+// }
 
-  bullshitBtn = createButton("Generate AI art review");
-  bullshitBtn.parent('wrapper');
-  bullshitBtn.mousePressed(generateAIReview);
-}
 
-function highlight() {
-  dropzone.style('background-color','#ccc');
-}
-
-function unhighlight() {
-  dropzone.style('background-color','#fff');
-}
 
 
 function gotResult(error, result) {
@@ -127,7 +150,10 @@ function gotResult(error, result) {
 
   sentence = string + ". " + generateBullshit() + " ";
 
-  createDiv(sentence);
+  review = createDiv(sentence);
+  review.parent('wrapper');
+  // textSize(20);
+  // text(sentence, 200, 10, 70);
 
   button = createButton("Read text");
   button.parent('wrapper');

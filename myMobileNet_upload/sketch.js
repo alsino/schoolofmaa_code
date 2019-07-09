@@ -150,7 +150,7 @@ function gotResult(error, result) {
 
   button = createButton("Read text");
   button.parent('wrapper');
-  button.mousePressed(buttonIsPressed);
+  button.mouseReleased(buttonIsPressed);
 
   function buttonIsPressed(){
     console.log("Button is pressed");

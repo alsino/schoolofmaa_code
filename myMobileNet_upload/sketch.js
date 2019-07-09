@@ -106,7 +106,7 @@ function setup() {
   // translate(width/2, height/ 2);
 
   bullshitBtn.style('display', 'block');
-  bullshitBtn.mouseReleased(() => {
+  bullshitBtn.mousePressed(() => {
     console.log("Ready");
     generateAIReview();
   });

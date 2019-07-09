@@ -105,13 +105,7 @@ function setup() {
   background("#fefefe");
   // translate(width/2, height/ 2);
 
-  bullshitBtn.style('display', 'block');
-  bullshitBtn.mousePressed(() => {
-    console.log("Ready");
-    generateAIReview();
-  });
-
-  console.log("Ready");
+  
 }
 
 function draw(){
@@ -125,14 +119,16 @@ function handleFile(file) {
   if (file.type === 'image') {
     img = createImg(file.data);
     img.hide();
+
+    bullshitBtn.style('display', 'block');
+    bullshitBtn.mouseReleased(generateAIReview);
   } else {
     img = null;
   }
 }
 
 function generateAIReview(){
-  console.log("generate review");
-  //myMobileNet.classify(img, gotResult);
+  myMobileNet.classify(img, gotResult);
 }
 
 
@@ -142,7 +138,7 @@ function gotResult(error, result) {
     console.error(error);
   }
 
-  // console.log(result);
+  console.log(result);
   let string = `"This piece is a very interesting collage of a ${result[0].label} and a ${result[1].label} and a ${result[2].label}`;
 
   sentence = string + ". " + generateBullshit() + " ";
@@ -151,8 +147,6 @@ function gotResult(error, result) {
   review.parent('wrapper');
   // textSize(20);
   // text(sentence, 200, 10, 70);
-
-  console.log("Call me");
 
   button = createButton("Read text");
   button.parent('wrapper');

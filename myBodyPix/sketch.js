@@ -91,14 +91,26 @@ function modelLoaded() {
 
       // console.log(rightWristY);
 
+      
+
       if (rightWristY < height/2) {
-        song.play();
-        console.log("song is playing")
-        background(255,0,0)
+
+        if (song.isPlaying()) {
+          console.log("song is ALREADY playing")
+        } else {
+          console.log("song should be played")
+          song.play();
+        }
+
+        // song.play();
+        // console.log("song is playing")
+        // background(255,0,0)
+
+
       } else {
         song.stop();
-        console.log("song NOT Playing")
-        background(255,255,0)
+        // console.log("song NOT Playing")
+        // background(255,255,0)
       }
 
     }
@@ -166,27 +178,33 @@ function gotResults (error, results){
 
 function draw (){
   // clear();
+  image(video, 0,0);
   drawFace();
+
+  // text('word', 10, 60);
 
 }
 
 
 function drawFace(){
 
-  image(eyeRight, rightEyeX, rightEyeY - 50, 100, 50);
-  image(eyeLeft, leftEyeX - 200, leftEyeY - 50, 100, 50);
+  push();
+  imageMode(CENTER);
 
-  image(eyeBrowRight, rightEyeX, rightEyeY - 90, 100, 30);
-  image(eyeBrowLeft, leftEyeX - 200, leftEyeY - 90, 100, 30);
+  image(eyeRight, rightEyeX, rightEyeY + 20, 80, 40);
+  image(eyeLeft, leftEyeX, leftEyeY + 20, 80, 40);
 
-  image(nose, noseX - 70, noseY, 50,50);
+  image(eyeBrowRight, rightEyeX, rightEyeY, 80, 20);
+  image(eyeBrowLeft, leftEyeX, leftEyeY, 80, 20);
+
+  image(nose, noseX, noseY, 60,80);
 
 
   if (mouthIsOpen) {
-    image(mouth, noseX - 90, noseY + 70, 100,50);
+    image(mouth, noseX, noseY + 70, 100,50);
     mouthIsOpen = false;
   } else {
-    image(mouthClosed, noseX - 90, noseY + 70, 100,50);
+    image(mouthClosed, noseX, noseY + 70, 100,50);
     mouthIsOpen = true;
   }
 
@@ -194,5 +212,5 @@ function drawFace(){
   // ellipse(rightWristX, rightWristY, 10,10)
   image(nose, rightWristX,rightWristY);
 
-
+  pop();
 }

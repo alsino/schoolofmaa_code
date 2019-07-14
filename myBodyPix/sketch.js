@@ -1,10 +1,11 @@
 let canvas;
-let text;
+let songText;
 let video;
 // let bodyPix;
 let mouthIsOpen = true;
 let songIsPlaying = false;
-
+let maskIsDrawn = true;
+let maskButton;
 
 let poses;
 let noseX, noseY;
@@ -18,6 +19,18 @@ let options = {
   "segmentationThreshold": 0.5 // 0 - 1, defaults to 0.5 
 }
 
+let poseNetOptions = {
+    "imageScaleFactor": 0.3,
+    "outputStride": 16,
+    "flipHorizontal": false,
+    "minConfidence": 0.5,
+    "maxPoseDetections": 5,
+    "scoreThreshold": 0.5,
+    "nmsRadius": 20,
+    "detectionType": 'single',
+    "multiplier": 0.75
+   }
+
 function preload(){
   eyeRight = loadImage("img/eye_right.png");
   eyeLeft = loadImage("img/eye_left.png");
@@ -28,29 +41,29 @@ function preload(){
   eyeBrowRight = loadImage("img/eyebrow_right.png");
   eyeBrowLeft = loadImage("img/eyebrow_left.png");
 
-  song = loadSound('sound/saymyname.mp3');
+  song = loadSound('sound/1.mp3');
 }
 
 
 
 function setup() {
-  canvas = createCanvas(600, 400);
+  canvas = createCanvas(800, 600);
   canvas.parent("#wrapper")
   canvas.elt.style.transform = "scaleX(-1)";
 
   angleMode(DEGREES);
 
   video = createCapture(VIDEO);
-  video.size(600,400);
+  video.size(800,600);
   video.hide();
 
-  video.elt.style.transform = "scaleX(-1)";
+  // video.elt.style.transform = "scaleX(-1)";
 
-  text = createDiv("");
-  text.class("text");
-  text.parent("#wrapper");
+  songText = createDiv("");
+  songText.class("songText");
+  songText.parent("#wrapper");
 
-  const songText = `Say my name, say my name \<br>
+  const songsongText = `Say my name, say my name \<br>
   If no one is around you \<br>
   Say baby I love you \<br>
   If you ain't runnin' game \<br>
@@ -58,12 +71,19 @@ function setup() {
   You actin' kinda shady \<br>
   Ain't callin' me baby`;
 
-  text.html(songText);
+  songText.html(songsongText);
 
   // bodypix = ml5.bodyPix(video,options,  modelLoaded);
 
-  poseNet = ml5.poseNet(video, modelLoaded);
+  poseNet = ml5.poseNet(video, poseNetOptions, modelLoaded);
 
+  maskButton = createButton("Toggle mask");
+  maskButton.mousePressed(toggleMask);
+
+}
+
+function toggleMask(){
+  maskIsDrawn = !maskIsDrawn;
 }
 
 function modelLoaded() {
@@ -98,20 +118,13 @@ function modelLoaded() {
         if (song.isPlaying()) {
           console.log("song is ALREADY playing")
         } else {
-          console.log("song should be played")
+          console.log("song SHOULD be played")
           song.play();
         }
-
-        // song.play();
-        // console.log("song is playing")
-        // background(255,0,0)
-
-
       } else {
         song.stop();
-        // console.log("song NOT Playing")
-        // background(255,255,0)
       }
+
 
     }
   });
@@ -177,40 +190,55 @@ function gotResults (error, results){
 
 
 function draw (){
-  // clear();
-  image(video, 0,0);
+  clear();
+  // rotate(radians(frameCount));
+  image(video, 0, 0, 800, 600);
   drawFace();
 
-  // text('word', 10, 60);
+  fill(255,0,0);
+  rect(50,50,50,50);
+
+  // background(200);
+  // rotateX(frameCount);
+  // rotateY(frameCount);
+  // box(50);
 
 }
 
 
 function drawFace(){
 
-  push();
-  imageMode(CENTER);
+  if (maskIsDrawn) {
 
-  image(eyeRight, rightEyeX, rightEyeY + 20, 80, 40);
-  image(eyeLeft, leftEyeX, leftEyeY + 20, 80, 40);
+    push();
+    imageMode(CENTER);
 
-  image(eyeBrowRight, rightEyeX, rightEyeY, 80, 20);
-  image(eyeBrowLeft, leftEyeX, leftEyeY, 80, 20);
+    image(eyeRight, rightEyeX, rightEyeY + 20, 80, 40);
+    image(eyeLeft, leftEyeX, leftEyeY + 20, 80, 40);
 
-  image(nose, noseX, noseY, 60,80);
+    image(eyeBrowRight, rightEyeX, rightEyeY, 80, 20);
+    image(eyeBrowLeft, leftEyeX, leftEyeY, 80, 20);
 
+    image(nose, noseX, noseY, 60,80);
 
-  if (mouthIsOpen) {
-    image(mouth, noseX, noseY + 70, 100,50);
-    mouthIsOpen = false;
-  } else {
-    image(mouthClosed, noseX, noseY + 70, 100,50);
-    mouthIsOpen = true;
-  }
+    if (mouthIsOpen) {
+      image(mouth, noseX, noseY + 70, 100,50);
+      // mouthIsOpen = false;
+    } else {
+      image(mouthClosed, noseX, noseY + 70, 100,50);
+      // mouthIsOpen = true;
+    }
 
-  fill(255,0,0);
-  // ellipse(rightWristX, rightWristY, 10,10)
-  image(nose, rightWristX,rightWristY);
+    fill(255,0,0);
+    // image(nose, rightWristX,rightWristY);
 
+    fill(0);
+    textSize(26);
+    // scale(-1);
+    text("test of a very long string",rightWristX,rightWristY)
+    
   pop();
+
+  } else {}
+  
 }

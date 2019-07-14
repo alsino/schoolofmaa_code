@@ -13,9 +13,9 @@ let leftEyeX, leftEyeY;
 let rightEyeX, rightEyeY;
 let rightWristX, rightWristY;
 
-let options = {
+let bodypixOptions = {
   "multiplier": 0.25, // 1.0, 0.75, or 0.50, 0.25
-  "outputStride": 32, // 8, 16, or 32, default is 16
+  "outputStride": 8, // 8, 16, or 32, default is 16
   "segmentationThreshold": 0.5 // 0 - 1, defaults to 0.5 
 }
 
@@ -47,15 +47,16 @@ function preload(){
 
 
 function setup() {
-  canvas = createCanvas(800, 600);
+  canvas = createCanvas(600, 400);
   canvas.parent("#wrapper")
   canvas.elt.style.transform = "scaleX(-1)";
 
   angleMode(DEGREES);
 
   video = createCapture(VIDEO);
-  video.size(800,600);
-  video.hide();
+  video.size(600,400);
+  video.parent("#wrapper");
+  // video.hide();
 
   // video.elt.style.transform = "scaleX(-1)";
 
@@ -71,9 +72,9 @@ function setup() {
   You actin' kinda shady \<br>
   Ain't callin' me baby`;
 
-  songText.html(songsongText);
+  // songText.html(songsongText);
 
-  // bodypix = ml5.bodyPix(video,options,  modelLoaded);
+  bodypix = ml5.bodyPix(video, bodypixOptions,  modelLoaded);
 
   poseNet = ml5.poseNet(video, poseNetOptions, modelLoaded);
 
@@ -88,7 +89,7 @@ function toggleMask(){
 
 function modelLoaded() {
   console.log("Model Loaded!");
-  // bodypix.segment(gotResults);
+  bodypix.segment(gotResults);
 
 
   poseNet.on('pose', function(results) {
@@ -151,33 +152,33 @@ function gotResults (error, results){
 
     let img = results.maskPerson;
 
-    // img.loadPixels();
+    img.loadPixels();
 
-    // for (let i = 0; i < img.width; i++) {
-    //   for (let j = 0; j < img.height; j++) {
+    for (let i = 0; i < img.width; i++) {
+      for (let j = 0; j < img.height; j++) {
 
-    //     const pixelColor = img.get(i, j);
-    //     // console.log(pixelColor);
+        const pixelColor = img.get(i, j);
+        // console.log(pixelColor);
 
-    //     if(pixelColor[3] == 255){
+        if(pixelColor[3] == 255){
 
-    //       // mask color
-    //       img.set(i, j, color(i, j, j));
-    //       // console.log("this is white")
+          // mask color
+          img.set(i, j, color(i, j, j));
+          // console.log("this is white")
 
-    //       // fill(0);
-    //       // ellipse(i, j, 10, 10);
+          // fill(0);
+          // ellipse(i, j, 10, 10);
 
 
-    //     } else {
+        } else {
 
-    //       // background color
-    //       img.set(i, j, color(j,i, 6));
-    //       // console.log("this is black")
-    //     }
-    //   }
-    // }
-    // img.updatePixels();
+          // background color
+          img.set(i, j, color(j,i, 6));
+          // console.log("this is black")
+        }
+      }
+    }
+    img.updatePixels();
 
 
     image(img, 0, 0);
@@ -190,13 +191,13 @@ function gotResults (error, results){
 
 
 function draw (){
-  clear();
+  // clear();
   // rotate(radians(frameCount));
-  image(video, 0, 0, 800, 600);
+  // image(video, 0, 0, 800, 600);
   drawFace();
 
-  fill(255,0,0);
-  rect(50,50,50,50);
+  // fill(255,0,0);
+  // rect(50,50,50,50);
 
   // background(200);
   // rotateX(frameCount);
@@ -235,7 +236,7 @@ function drawFace(){
     fill(0);
     textSize(26);
     // scale(-1);
-    text("test of a very long string",rightWristX,rightWristY)
+    // text("test of a very long string",rightWristX,rightWristY)
     
   pop();
 

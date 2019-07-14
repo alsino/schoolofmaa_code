@@ -1,6 +1,6 @@
 ## Making a mask - w/ bodyPix and poseNet
 
-This demo uses the ML algorithms bodypix and poseNet in combination using [ml5.js](https://ml5js.org/) and [p5.js](http://p5js.org/). 
+This demo uses the ML algorithms bodyPix and poseNet in combination using [ml5.js](https://ml5js.org/) and [p5.js](http://p5js.org/). 
 
 First bodyPix is used to create a segmentation between the body and background from a webcam image. The pixels in the segmentation images are then individually accessed and colored.
 

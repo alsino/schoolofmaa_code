@@ -110,10 +110,6 @@ function modelLoaded() {
       rightWristX = results[0].pose.rightWrist.x;
       rightWristY = results[0].pose.rightWrist.y;
 
-      // console.log(rightWristY);
-
-      
-
       if (rightWristY < height/2) {
 
         if (song.isPlaying()) {
@@ -132,7 +128,6 @@ function modelLoaded() {
 
 
    
-
   
 }
 
@@ -144,11 +139,7 @@ function gotResults (error, results){
   }
   if (results && results.maskPerson) {
     // console.log(results);
-    // fill(0);
-    // image(video, 0,0);
     background(0,0,255);
-    // image(results.maskBackground, 0, 0, width, height)
-    // let img = image(results.maskPerson, 0, 0, width, height)
 
     let img = results.maskPerson;
 
@@ -164,17 +155,9 @@ function gotResults (error, results){
 
           // mask color
           img.set(i, j, color(i, j, j));
-          // console.log("this is white")
-
-          // fill(0);
-          // ellipse(i, j, 10, 10);
-
-
         } else {
-
           // background color
           img.set(i, j, color(j,i, 6));
-          // console.log("this is black")
         }
       }
     }
@@ -192,18 +175,7 @@ function gotResults (error, results){
 
 function draw (){
   // clear();
-  // rotate(radians(frameCount));
-  // image(video, 0, 0, 800, 600);
   drawFace();
-
-  // fill(255,0,0);
-  // rect(50,50,50,50);
-
-  // background(200);
-  // rotateX(frameCount);
-  // rotateY(frameCount);
-  // box(50);
-
 }
 
 

@@ -10,4 +10,4 @@ This demo is a test to see how poseNet and bodyPix can be used in combination.
 
 ## Demo
 
-Try the demo [here] (https://alsino.github.io/schoolofmaa_code/myBodyPix/).
+Try the [demo] (https://alsino.github.io/schoolofmaa_code/myBodyPix/).

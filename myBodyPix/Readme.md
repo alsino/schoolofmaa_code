@@ -12,3 +12,8 @@ This demo is a test to see how poseNet and bodyPix can be used in combination.
 ## Demo
 
 Try the [demo](https://alsino.github.io/schoolofmaa_code/myBodyPix/).
+
+
+## Output
+
+![an output image](https://github.com/alsino/schoolofmaa_code/blob/master/myBodyPix/output/3.png)

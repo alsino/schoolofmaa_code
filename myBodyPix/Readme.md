@@ -6,3 +6,8 @@ First bodypix is used to create a segmentation between the body and background f
 Secondly, poseNet is used to get the coordinates of the face markers (i.e. eyes, mouth, nose, etc.). Then for each marker images of cropped bodyparts are added on top, which can be switched on and off as a mask. 
 
 This demo is a test to see how poseNet and bodyPix can be used in combination.
+
+
+## Demo
+
+Try the demo [here] (https://alsino.github.io/schoolofmaa_code/myBodyPix/).

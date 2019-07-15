@@ -21,7 +21,7 @@ let bodypixOptions = {
 
 let poseNetOptions = {
     "imageScaleFactor": 0.3,
-    "outputStride": 16,
+    "outputStride": 8,
     "flipHorizontal": false,
     "minConfidence": 0.5,
     "maxPoseDetections": 5,
@@ -42,6 +42,11 @@ function preload(){
   eyeBrowLeft = loadImage("img/eyebrow_left.png");
 
   song = loadSound('sound/1.mp3');
+
+  jayZ = loadImage("img/jay.png");
+  songJay = loadSound('sound/hardknocklife.mp3');
+
+  
 }
 
 
@@ -58,7 +63,7 @@ function setup() {
   video.parent("#wrapper");
   // video.hide();
 
-  // video.elt.style.transform = "scaleX(-1)";
+  video.elt.style.transform = "scaleX(-1)";
 
   songText = createDiv("");
   songText.class("songText");
@@ -74,7 +79,7 @@ function setup() {
 
   // songText.html(songsongText);
 
-  bodypix = ml5.bodyPix(video, bodypixOptions,  modelLoaded);
+  // bodypix = ml5.bodyPix(video, bodypixOptions,  modelLoaded);
 
   poseNet = ml5.poseNet(video, poseNetOptions, modelLoaded);
 
@@ -89,7 +94,7 @@ function toggleMask(){
 
 function modelLoaded() {
   console.log("Model Loaded!");
-  bodypix.segment(gotResults);
+  // bodypix.segment(gotResults);
 
 
   poseNet.on('pose', function(results) {
@@ -112,14 +117,14 @@ function modelLoaded() {
 
       if (rightWristY < height/2) {
 
-        if (song.isPlaying()) {
+        if (songJay.isPlaying()) {
           console.log("song is ALREADY playing")
         } else {
           console.log("song SHOULD be played")
-          song.play();
+          songJay.play();
         }
       } else {
-        song.stop();
+        songJay.stop();
       }
 
 
@@ -166,7 +171,7 @@ function gotResults (error, results){
 
     image(img, 0, 0);
 
-    bodypix.segment(gotResults)
+    // bodypix.segment(gotResults)
 
   }
 }
@@ -175,6 +180,7 @@ function gotResults (error, results){
 
 function draw (){
   // clear();
+  image(video, 0,0)
   drawFace();
 }
 
@@ -186,21 +192,21 @@ function drawFace(){
     push();
     imageMode(CENTER);
 
-    image(eyeRight, rightEyeX, rightEyeY + 20, 80, 40);
-    image(eyeLeft, leftEyeX, leftEyeY + 20, 80, 40);
+    // image(eyeRight, rightEyeX, rightEyeY + 20, 80, 40);
+    // image(eyeLeft, leftEyeX, leftEyeY + 20, 80, 40);
 
-    image(eyeBrowRight, rightEyeX, rightEyeY, 80, 20);
-    image(eyeBrowLeft, leftEyeX, leftEyeY, 80, 20);
+    // image(eyeBrowRight, rightEyeX, rightEyeY, 80, 20);
+    // image(eyeBrowLeft, leftEyeX, leftEyeY, 80, 20);
 
-    image(nose, noseX, noseY, 60,80);
+    // image(nose, noseX, noseY, 60,80);
 
-    if (mouthIsOpen) {
-      image(mouth, noseX, noseY + 70, 100,50);
-      // mouthIsOpen = false;
-    } else {
-      image(mouthClosed, noseX, noseY + 70, 100,50);
-      // mouthIsOpen = true;
-    }
+    // if (mouthIsOpen) {
+    //   image(mouth, noseX, noseY + 70, 100,50);
+    //   // mouthIsOpen = false;
+    // } else {
+    //   image(mouthClosed, noseX, noseY + 70, 100,50);
+    //   // mouthIsOpen = true;
+    // }
 
     fill(255,0,0);
     // image(nose, rightWristX,rightWristY);
@@ -208,7 +214,12 @@ function drawFace(){
     fill(0);
     textSize(26);
     // scale(-1);
-    // text("test of a very long string",rightWristX,rightWristY)
+    ellipse(rightWristX,rightWristY, 50,50)
+    // text("test",rightWristX,rightWristY - 100)
+
+    let jayWidth = 180;
+    let jayHeight = jayWidth * 1.56
+    image(jayZ, noseX, noseY, jayWidth, jayHeight )
     
   pop();
 

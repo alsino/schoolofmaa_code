@@ -21,14 +21,14 @@ let bodypixOptions = {
 
 let poseNetOptions = {
     "imageScaleFactor": 0.3,
-    "outputStride": 8,
+    "outputStride": 32,
     "flipHorizontal": false,
     "minConfidence": 0.5,
     "maxPoseDetections": 5,
     "scoreThreshold": 0.5,
     "nmsRadius": 20,
     "detectionType": 'single',
-    "multiplier": 0.75
+    "multiplier": 1
    }
 
 function preload(){
